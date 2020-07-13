@@ -36,14 +36,8 @@ public class UserEntity {
     @Column(length = 15)
     private String phone;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    private ImageEntity image;
-
-//    @OneToOne
-//    private SmallImageEntity smallImage;
-
-    @Column(nullable = false)
-    private Boolean active = Boolean.FALSE;
+//    @Column(nullable = false) //TODO in jwt security instead of activ must be !is_deleted
+//    private Boolean active = Boolean.FALSE;
 
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
@@ -56,9 +50,6 @@ public class UserEntity {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<ItemEntity> items = new ArrayList<>();
 
     @Override
     public int hashCode(){
@@ -84,7 +75,7 @@ public class UserEntity {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + mail + '\'' +
                 ", phone='" + phone + '\'' +
-                ", active=" + active +
+                ", active=" + !isDeleted +
                 ", roles=" + roles +
                 '}';
     }

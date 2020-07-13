@@ -8,14 +8,12 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "image")
+@Table(name = "images")
 public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
 
     @Column(name = "picture")
     @Lob

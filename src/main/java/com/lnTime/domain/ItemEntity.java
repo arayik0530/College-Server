@@ -15,34 +15,26 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "news")
-public class NewsEntity {
+@Table(name = "items")
+public class ItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String description;
-
-    @Column(nullable = false)
     private String title;
 
-//    @JoinColumn(name = "user_id", nullable = false)
-//    @ManyToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private UserEntity user;
+    @Column(nullable = false)
+    private String description;
 
-//    @JoinColumn(name = "sub_category_id", nullable = false)
-//    @ManyToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private SubCategoryEntity subCategory;
+    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private CategoryEntity category;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<ImageEntity> images;
-
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<SmallImageEntity> smallImages;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -67,10 +59,11 @@ public class NewsEntity {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "ItemEntity{" +
                 "id=" + id +
-                ", description='" + description +
-                ", title='" + title +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", category=" + category +
                 '}';
     }
 }
