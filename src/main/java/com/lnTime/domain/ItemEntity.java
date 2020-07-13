@@ -25,8 +25,11 @@ public class ItemEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3000)
     private String description;
+
+    @Column
+    private String text;
 
     @JoinColumn(name = "sub_category_id", nullable = false)
     @ManyToOne
