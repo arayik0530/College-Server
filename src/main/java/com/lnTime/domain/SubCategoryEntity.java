@@ -9,18 +9,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class CategoryEntity {
+@Table(name = "sub_categories")
+public class SubCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +22,11 @@ public class CategoryEntity {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-    private List<SubCategoryEntity> subCategories = new ArrayList<>();
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.REMOVE)
+    private List<ItemEntity> items = new ArrayList<>();
+
+    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private CategoryEntity category;
 }

@@ -28,10 +28,10 @@ public class ItemEntity {
     @Column(nullable = false)
     private String description;
 
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "sub_category_id", nullable = false)
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private CategoryEntity category;
+    private SubCategoryEntity subCategory;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<ImageEntity> images;
@@ -63,7 +63,7 @@ public class ItemEntity {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", category=" + category +
+                ", category=" + subCategory +
                 '}';
     }
 }
