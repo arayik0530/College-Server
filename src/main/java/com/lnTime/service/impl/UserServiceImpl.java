@@ -7,6 +7,7 @@ import com.lnTime.dto.user.UserRegistrationDTO;
 import com.lnTime.repository.UserRepository;
 import com.lnTime.security.jwt.JwtUser;
 import com.lnTime.service.UserService;
+import com.lnTime.service.util.exception.InvalidPasswordLengthException;
 import com.lnTime.service.util.exception.UserAlreadyExistsException;
 import com.lnTime.service.util.exception.UserNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-
+    public final int MIN_PASS_LENGTH = 8;
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -75,6 +76,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(UserInfoDTO user) {
+        if(user.getPassword().length() < 8){
+            throw new InvalidPasswordLengthException(MIN_PASS_LENGTH);
+        }
 
         Optional<UserEntity> byId = userRepository.findById(user.getId());
         if(byId.isPresent()){
@@ -91,6 +95,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(UserRegistrationDTO user) {
+        if(user.getPassword().length() < 8){
+            throw new InvalidPasswordLengthException(MIN_PASS_LENGTH);
+        }
 
         Optional<UserEntity> byMail = userRepository.findByMail(user.getMail());
         if(byMail.isPresent()){

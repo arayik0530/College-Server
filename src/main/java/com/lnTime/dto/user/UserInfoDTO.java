@@ -18,6 +18,8 @@ public class UserInfoDTO {
 
     private String mail;
 
+    private String password;
+
     private String phone;
 
     private String[] roles;
