@@ -36,9 +36,6 @@ public class UserEntity {
     @Column(length = 15)
     private String phone;
 
-//    @Column(nullable = false) //TODO in jwt security instead of activ must be !is_deleted
-//    private Boolean active = Boolean.FALSE;
-
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
 

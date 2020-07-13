@@ -5,9 +5,11 @@ import com.lnTime.domain.util.UserRole;
 import com.lnTime.dto.user.UserInfoDTO;
 import com.lnTime.dto.user.UserRegistrationDTO;
 import com.lnTime.repository.UserRepository;
+import com.lnTime.security.jwt.JwtUser;
 import com.lnTime.service.UserService;
 import com.lnTime.service.util.exception.UserAlreadyExistsException;
 import com.lnTime.service.util.exception.UserNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,6 +107,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getMe() {
 
-        return 0L;
+        return ((JwtUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getId();
     }
 }
