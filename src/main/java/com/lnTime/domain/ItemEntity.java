@@ -15,7 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "items")
+@Table(name = "items", indexes = {
+        @Index(name = "items_title_IDX", columnList = "title")})
 public class ItemEntity {
 
     @Id

@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
-    @Query(value = "from ItemEntity as item where item.title like ?1% " +
-            "OR item.description like %?1%")
+
+    @Query(value = "from ItemEntity as item where item.title like concat(?1, '%') " +
+            "OR item.description like concat(concat('%', ?1), '%')")
     Page<ItemEntity> searchByParam(String param, Pageable pageable);
 }
