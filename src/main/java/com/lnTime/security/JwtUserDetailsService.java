@@ -4,6 +4,8 @@ import com.lnTime.domain.UserEntity;
 import com.lnTime.security.jwt.JwtUser;
 import com.lnTime.security.jwt.JwtUserFactory;
 import com.lnTime.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,12 +17,8 @@ import org.springframework.stereotype.Service;
 @Primary
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
-
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
-
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String mail) {

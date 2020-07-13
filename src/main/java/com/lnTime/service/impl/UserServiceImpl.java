@@ -10,6 +10,10 @@ import com.lnTime.service.UserService;
 import com.lnTime.service.util.exception.InvalidPasswordLengthException;
 import com.lnTime.service.util.exception.UserAlreadyExistsException;
 import com.lnTime.service.util.exception.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,14 +26,10 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     public final int MIN_PASS_LENGTH = 8;
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(final UserRepository userRepository, final BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity findByMail(String mail) {
@@ -119,5 +119,10 @@ public class UserServiceImpl implements UserService {
                 .getAuthentication()
                 .getPrincipal())
                 .getId();
+    }
+
+    @Override
+    public Page<UserEntity> findAllUsers(final Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

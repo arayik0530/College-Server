@@ -7,6 +7,7 @@ import com.lnTime.security.jwt.JwtTokenProvider;
 import com.lnTime.service.UserService;
 import com.lnTime.service.util.exception.InactiveUserException;
 import com.lnTime.service.util.exception.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,15 +23,13 @@ import java.util.ArrayList;
 @RequestMapping("/api/auth/")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(final AuthenticationManager authenticationManager, final JwtTokenProvider jwtTokenProvider, final UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-    }
 
     @PostMapping("login")
     public String login(@RequestBody LoginDTO loginDto){
