@@ -43,9 +43,7 @@ public class UserInfoDTO {
 
     }
 
-    public UserEntity toEntity() {
-
-        UserEntity user = new UserEntity();
+    public UserEntity toEntity( UserEntity user) {
 
         user.setId(this.id);
         user.setFirstName(this.firstName);
