@@ -1,5 +1,11 @@
 package com.lnTime.security.jwt;
 
+import com.lnTime.api.ExceptionHandlerController;
+import com.lnTime.config.ExceptionHandlerControllerProvider;
+import com.lnTime.domain.UserEntity;
+import com.lnTime.repository.UserRepository;
+import com.lnTime.service.util.exception.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -9,11 +15,17 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
+    private ExceptionHandlerController exceptionHandlerController = new ExceptionHandlerControllerProvider().provide();
 
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserRepository userRepository;
 
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -21,17 +33,27 @@ public class JwtTokenFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
+        try {
+            String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
 
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                if (authentication != null) {
 
-            if (authentication != null) {
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+            filterChain.doFilter(req, res);
+        }catch (JwtAuthenticationException jwtException) {
+            exceptionHandlerController.handleFilterExceptions(jwtException, (HttpServletResponse) res);
         }
-        filterChain.doFilter(req, res);
+    }
+
+    private boolean isUserActive(String token) {
+        String email = jwtTokenProvider.getUsername(token);
+        UserEntity userEntity = userRepository.findByMail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+        return !userEntity.getIsDeleted();
     }
 }
