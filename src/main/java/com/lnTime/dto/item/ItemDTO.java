@@ -1,15 +1,20 @@
 package com.lnTime.dto.item;
 
 import com.lnTime.domain.ItemEntity;
-import com.lnTime.domain.UserEntity;
-import com.lnTime.dto.user.UserInfoDTO;
+import com.lnTime.domain.SubCategoryEntity;
+import com.lnTime.repository.SubCategoryRepository;
+import com.lnTime.service.util.exception.SubCategoryNotFoundException;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Data
 public class ItemDTO {
+
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
     private Long id;
 
@@ -24,6 +29,8 @@ public class ItemDTO {
     private LocalDateTime created;
 
     private LocalDateTime lastUpdated;
+
+    private Long subCategoryId;
 
     public static ItemDTO mapFromEntity(ItemEntity item) {
 
@@ -40,6 +47,7 @@ public class ItemDTO {
         itemDTO.text = item.getText();
         itemDTO.created = item.getCreated();
         itemDTO.lastUpdated = item.getLastUpdated();
+        itemDTO.subCategoryId = item.getSubCategory().getId();
 
         return itemDTO;
     }
@@ -51,6 +59,11 @@ public class ItemDTO {
         item.setDescription(this.description);
         item.setPath(this.path);
         item.setText(this.text);
+        Optional<SubCategoryEntity> byId = subCategoryRepository.findById(this.subCategoryId);
+        if(byId.isPresent())
+            item.setSubCategory(byId.get());
+        else
+            throw new SubCategoryNotFoundException(subCategoryId);
 
         return item;
     }

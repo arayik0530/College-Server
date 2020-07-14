@@ -2,14 +2,11 @@ package com.lnTime.service.impl;
 
 import com.lnTime.domain.ImageEntity;
 import com.lnTime.domain.ItemEntity;
-import com.lnTime.domain.UserEntity;
 import com.lnTime.dto.item.ItemDTO;
-import com.lnTime.repository.ImageRepository;
 import com.lnTime.repository.ItemRepository;
 import com.lnTime.service.ImageService;
 import com.lnTime.service.ItemService;
 import com.lnTime.service.util.exception.ItemNotFoundException;
-import com.lnTime.service.util.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,9 +40,9 @@ public class ItemServiceImpl implements ItemService {
         Optional<ItemEntity> byId = itemRepository.findById(id);
         if (byId.isPresent()) {
             return ItemDTO.mapFromEntity(byId.get());
+        } else {
+            throw new ItemNotFoundException(id);
         }
-
-        return null;
     }
 
     @Override
@@ -66,14 +63,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void update(ItemDTO item) {
-        Optional<ItemEntity> byId = itemRepository.findById(item.getId());
+    public void update(ItemDTO item, Long id) {
+        Optional<ItemEntity> byId = itemRepository.findById(id);
         if (byId.isPresent()) {
             ItemEntity itemEntity = byId.get();
             item.toEntity(itemEntity);
             itemRepository.save(itemEntity);
         } else {
-            throw new UserNotFoundException(item.getId());
+            throw new ItemNotFoundException(id);
         }
     }
 
@@ -94,11 +91,10 @@ public class ItemServiceImpl implements ItemService {
     public void deleteImage(Long imageId, Long itemId) {
         ImageEntity imageEntity = imageService.findById(imageId);
         Optional<ItemEntity> byId = itemRepository.findById(itemId);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             //TODO must be tested from front
             byId.get().getImages().remove(imageEntity);
-        }
-        else {
+        } else {
             throw new ItemNotFoundException(itemId);
         }
         //TODO must be tested from front
@@ -111,8 +107,7 @@ public class ItemServiceImpl implements ItemService {
         Optional<ItemEntity> byId = itemRepository.findById(itemId);
         if (byId.isPresent()) {
             return byId.get().getImages();
-        }
-        else {
+        } else {
             throw new ItemNotFoundException(itemId);
         }
     }

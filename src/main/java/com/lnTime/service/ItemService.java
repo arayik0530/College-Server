@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ItemService {
 
+    //TODO or Page<ItemDTO> ?
     Page<ItemEntity> findByTitleOrDescription(String param, Pageable pageable);
 
     ItemDTO findById(Long id);
@@ -19,7 +20,7 @@ public interface ItemService {
 
     void save(ItemDTO item);
 
-    void update(ItemDTO item);
+    void update(ItemDTO item, Long id);
 
     void saveImage(MultipartFile image, Long itemId);
 

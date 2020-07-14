@@ -48,6 +48,8 @@ public class ExceptionHandlerController {
             UsernameNotFoundException.class,
             ItemNotFoundException.class,
             ImageNotFoundException.class,
+            SubCategoryNotFoundException.class,
+            CategoryNotFoundException.class,
            // InvalidTokenException.class,
             })
 

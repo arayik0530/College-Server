@@ -42,14 +42,15 @@ public class ItemController {
     }
 
     @PostMapping("add")
+    @PreAuthorize(value = "isAuthenticated()")
     public void save(@RequestBody ItemDTO item){
         itemService.save(item);
     }
 
     @PutMapping("update/{id}")
     @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
-    public void update(@RequestBody ItemDTO item){
-       itemService.update(item);
+    public void update(@RequestBody ItemDTO item, @PathVariable Long id){
+       itemService.update(item, id);
     }
 
     @PostMapping("{id}/add-image")
