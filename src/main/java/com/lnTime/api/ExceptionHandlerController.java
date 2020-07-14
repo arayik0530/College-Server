@@ -1,9 +1,7 @@
 package com.lnTime.api;
 
 import com.lnTime.security.jwt.JwtAuthenticationException;
-import com.lnTime.service.util.exception.InactiveUserException;
-import com.lnTime.service.util.exception.UserAlreadyExistsException;
-import com.lnTime.service.util.exception.UserNotFoundException;
+import com.lnTime.service.util.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,7 +30,7 @@ public class ExceptionHandlerController {
     }
 
 
-    @ExceptionHandler(value = {JwtAuthenticationException.class})
+    @ExceptionHandler(value = {JwtAuthenticationException.class, WrongPasswordException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity handleJwtAuthException(JwtAuthenticationException exception) {
         return new ResponseEntity<>("JWT token is expired or invalid.", HttpStatus.BAD_REQUEST);
@@ -61,8 +59,8 @@ public class ExceptionHandlerController {
     }
 
 
-//    @ExceptionHandler(ActionForbiddenException.class)
-//    public ResponseEntity<String> handleActionForbiddenException(RuntimeException exception) {
-//        return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
-//    }
+    @ExceptionHandler(ActionForbiddenException.class)
+    public ResponseEntity<String> handleActionForbiddenException(RuntimeException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+    }
 }

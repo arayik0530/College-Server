@@ -1,7 +1,9 @@
 package com.lnTime.api.user;
 
+import com.lnTime.dto.user.PasswordChangingDTO;
 import com.lnTime.dto.user.UserInfoDTO;
 import com.lnTime.service.UserService;
+import com.lnTime.service.util.exception.ActionForbiddenException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,7 +40,26 @@ public class UserController {
     }
 
     @PutMapping("update")
-    public void update(@RequestBody UserInfoDTO user) {
-        userService.update(user);
+    public void update(@RequestBody UserInfoDTO userInfoDto) {
+        if (userInfoDto.getId().equals(userService.getMe())) {
+            userService.update(userInfoDto);
+        }else {
+            throw new ActionForbiddenException();
+        }
+    }
+
+    @GetMapping("{id}")
+    @PreAuthorize(value = "isAuthenticated()")
+    public UserInfoDTO getById(@PathVariable Long id) {
+        return userService.findById(id);
+    }
+
+    @PutMapping("change-password")
+    public void changePassword(@RequestBody PasswordChangingDTO passwordChangingDto) {
+        if (passwordChangingDto.getEmail().equals(userService.findById(userService.getMe()).getMail())) {
+            userService.updatePassword(passwordChangingDto);
+        }else {
+            throw new ActionForbiddenException();
+        }
     }
 }

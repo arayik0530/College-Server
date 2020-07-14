@@ -2,6 +2,7 @@ package com.lnTime.service.impl;
 
 import com.lnTime.domain.UserEntity;
 import com.lnTime.domain.util.UserRole;
+import com.lnTime.dto.user.PasswordChangingDTO;
 import com.lnTime.dto.user.UserInfoDTO;
 import com.lnTime.dto.user.UserRegistrationDTO;
 import com.lnTime.repository.UserRepository;
@@ -10,6 +11,7 @@ import com.lnTime.service.UserService;
 import com.lnTime.service.util.exception.InvalidPasswordLengthException;
 import com.lnTime.service.util.exception.UserAlreadyExistsException;
 import com.lnTime.service.util.exception.UserNotFoundException;
+import com.lnTime.service.util.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -73,12 +75,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //TODO is password update method required?
+    //TODO is password DTO required?
+
     @Override
     @Transactional
     public void update(UserInfoDTO user) {
-        if(user.getPassword().length() < 8){
-            throw new InvalidPasswordLengthException(MIN_PASS_LENGTH);
-        }
 
         Optional<UserEntity> byId = userRepository.findById(user.getId());
         if(byId.isPresent()){
@@ -122,7 +124,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserEntity> findAllUsers(final Pageable pageable) {
+    public Page<UserEntity> findAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void updatePassword(PasswordChangingDTO passwordChangingDto) {
+
+        UserEntity userEntity = userRepository.findByMail(passwordChangingDto.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(passwordChangingDto.getEmail()));
+        if (passwordEncoder.matches(passwordChangingDto.getOldPassword(),userEntity.getPassword())) {
+            userEntity.setPassword(passwordEncoder.encode(passwordChangingDto.getNewPassword()));
+            userRepository.save(userEntity);
+        } else {
+            throw new WrongPasswordException();
+        }
     }
 }
