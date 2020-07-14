@@ -75,9 +75,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    //TODO is password update method required?
-    //TODO is password DTO required?
-
     @Override
     @Transactional
     public void update(UserInfoDTO user) {
@@ -128,6 +125,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable);
     }
 
+    @Override
     @Transactional
     public void updatePassword(PasswordChangingDTO passwordChangingDto) {
 
