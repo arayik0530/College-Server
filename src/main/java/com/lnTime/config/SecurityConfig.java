@@ -44,7 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/items/**/all-images").permitAll()//TODO test from front
                 .antMatchers("/api/items/**/show").permitAll()//TODO test from front
                 .antMatchers("/api/categories/**/show").permitAll()//TODO test from front
+                .antMatchers("/api/subCategories/**/show").permitAll()//TODO test from front
                 .antMatchers("/api/categories/**/show/subCategories").permitAll()//TODO test from front
+                .antMatchers("/api/subCategories/**/show/items").permitAll()//TODO test from front
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()

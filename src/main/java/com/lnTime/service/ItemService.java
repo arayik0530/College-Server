@@ -12,9 +12,9 @@ import java.util.List;
 public interface ItemService {
 
     //TODO or Page<ItemDTO> ?
-    Page<ItemEntity> findByTitleOrDescription(String param, Pageable pageable);
+    Page<ItemDTO> findByTitleOrDescription(String param, Pageable pageable);
 
-    ItemDTO findById(Long id);
+    ItemEntity findById(Long id);
 
     void remove(Long id);
 

@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryDTO.toEntity(categoryEntity);
             categoryRepository.save(categoryEntity);
         } else {
-            throw new CategoryNotFoundException(categoryDTO.getId());
+            throw new CategoryNotFoundException(id);
         }
     }
 

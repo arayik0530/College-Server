@@ -32,12 +32,12 @@ public class ItemController {
     }
 
     @GetMapping("{id}/show")
-    public ItemDTO getById(@PathVariable Long id) {
+    public ItemEntity getById(@PathVariable Long id) {
         return itemService.findById(id);
     }
 
     @GetMapping("{param}/show")
-    public Page<ItemEntity> findByTitleOrDescription(@PathVariable String param, @PageableDefault Pageable pageable) {
+    public Page<ItemDTO> findByTitleOrDescription(@PathVariable String param, @PageableDefault Pageable pageable) {
         return itemService.findByTitleOrDescription(param, pageable);
     }
 
