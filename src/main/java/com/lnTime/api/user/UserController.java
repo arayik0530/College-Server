@@ -4,6 +4,7 @@ import com.lnTime.dto.user.PasswordChangingDTO;
 import com.lnTime.dto.user.UserInfoDTO;
 import com.lnTime.service.UserService;
 import com.lnTime.service.util.exception.ActionForbiddenException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,11 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users/")
 public class UserController {
 
+    @Autowired
     private UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("me")
     @PreAuthorize(value = "isAuthenticated()")

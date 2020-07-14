@@ -40,7 +40,7 @@ public class ItemEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private SubCategoryEntity subCategory;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<ImageEntity> images;
 
     @CreationTimestamp

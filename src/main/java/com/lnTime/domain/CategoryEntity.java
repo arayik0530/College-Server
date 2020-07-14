@@ -29,6 +29,6 @@ public class CategoryEntity {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<SubCategoryEntity> subCategories = new ArrayList<>();
 }

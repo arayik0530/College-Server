@@ -47,6 +47,7 @@ public class ExceptionHandlerController {
             UserNotFoundException.class,
             UsernameNotFoundException.class,
             ItemNotFoundException.class,
+            ImageNotFoundException.class,
            // InvalidTokenException.class,
             })
 

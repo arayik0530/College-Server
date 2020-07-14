@@ -5,6 +5,7 @@ import com.lnTime.domain.ItemEntity;
 import com.lnTime.repository.ImageRepository;
 import com.lnTime.repository.ItemRepository;
 import com.lnTime.service.ImageService;
+import com.lnTime.service.util.exception.ImageNotFoundException;
 import com.lnTime.service.util.exception.ItemNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,16 @@ public class ImageServiceImpl implements ImageService {
 
         itemEntity.getImages().add(imageEntity);
         itemRepository.save(itemEntity);
+    }
+
+    @Override
+    public ImageEntity findById(Long imageId) {
+       Optional<ImageEntity> byId = imageRepository.findById(imageId);
+       if(byId.isPresent()){
+           return byId.get();
+       }
+       else {
+           throw new ImageNotFoundException(imageId);
+       }
     }
 }

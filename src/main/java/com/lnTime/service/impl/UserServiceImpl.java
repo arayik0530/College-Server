@@ -13,7 +13,6 @@ import com.lnTime.service.util.exception.UserAlreadyExistsException;
 import com.lnTime.service.util.exception.UserNotFoundException;
 import com.lnTime.service.util.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
