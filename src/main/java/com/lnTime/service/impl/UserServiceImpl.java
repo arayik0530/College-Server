@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity user = null;
 
-        if(byMail.isPresent()){
+        if (byMail.isPresent()) {
             user = byMail.get();
         }
 
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity user = null;
 
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             user = byId.get();
         }
 
@@ -63,13 +63,11 @@ public class UserServiceImpl implements UserService {
     public void remove(Long id) {
 
         Optional<UserEntity> byId = userRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             UserEntity userEntity = byId.get();
             userEntity.setIsDeleted(true);
             userRepository.save(userEntity);
-        }
-
-        else {
+        } else {
             throw new UserNotFoundException(id);
         }
     }
@@ -79,13 +77,11 @@ public class UserServiceImpl implements UserService {
     public void update(UserInfoDTO user) {
 
         Optional<UserEntity> byId = userRepository.findById(user.getId());
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             UserEntity userEntity = byId.get();
             user.toEntity(userEntity);
             userRepository.save(userEntity);
-        }
-
-        else {
+        } else {
             throw new UserNotFoundException(user.getId());
         }
     }
@@ -93,12 +89,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(UserRegistrationDTO user) {
-        if(user.getPassword().length() < 8){
+        if (user.getPassword().length() < 8) {
             throw new InvalidPasswordLengthException(MIN_PASS_LENGTH);
         }
 
         Optional<UserEntity> byMail = userRepository.findByMail(user.getMail());
-        if(byMail.isPresent()){
+        if (byMail.isPresent()) {
             throw new UserAlreadyExistsException(user.getMail());
         }
 
@@ -130,11 +126,37 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userEntity = userRepository.findByMail(passwordChangingDto.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(passwordChangingDto.getEmail()));
-        if (passwordEncoder.matches(passwordChangingDto.getOldPassword(),userEntity.getPassword())) {
+        if (passwordEncoder.matches(passwordChangingDto.getOldPassword(), userEntity.getPassword())) {
             userEntity.setPassword(passwordEncoder.encode(passwordChangingDto.getNewPassword()));
             userRepository.save(userEntity);
         } else {
             throw new WrongPasswordException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void makeActive(Long id) {
+        Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            UserEntity userEntity = byId.get();
+            userEntity.setIsActivated(true);
+            userRepository.save(userEntity);
+        } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void makeInactive(Long id) {
+        Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            UserEntity userEntity = byId.get();
+            userEntity.setIsActivated(false);
+            userRepository.save(userEntity);
+        } else {
+            throw new UserNotFoundException(id);
         }
     }
 }

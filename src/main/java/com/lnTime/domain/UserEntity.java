@@ -36,6 +36,9 @@ public class UserEntity {
     @Column(length = 15)
     private String phone;
 
+    @Column(nullable = false, name = "is_activated")
+    private Boolean isActivated = Boolean.FALSE;
+
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
 

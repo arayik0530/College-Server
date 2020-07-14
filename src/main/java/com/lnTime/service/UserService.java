@@ -24,4 +24,8 @@ public interface UserService {
     Page<UserEntity> findAllUsers(Pageable pageable);
 
     void updatePassword(PasswordChangingDTO passwordChangingDto);
+
+    void makeActive(Long id);
+
+    void makeInactive(Long id);
 }

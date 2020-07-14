@@ -60,4 +60,16 @@ public class UserController {
             throw new ActionForbiddenException();
         }
     }
+
+    @PutMapping("{id}/toggle-active")
+    @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
+    public void makeActive(@PathVariable Long id) {
+       userService.makeActive(id);
+    }
+
+    @PutMapping("{id}/toggle-inactive")
+    @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
+    public void makeInactive(@PathVariable Long id) {
+        userService.makeInactive(id);
+    }
 }

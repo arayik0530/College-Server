@@ -20,6 +20,10 @@ public class UserInfoDTO {
 
     private String phone;
 
+    private Boolean isActivated;
+
+    private Boolean isDeleted;
+
     private String[] roles;
 
     public static UserInfoDTO mapFromEntity(UserEntity user) {
@@ -35,6 +39,8 @@ public class UserInfoDTO {
         userInfoDTO.lastName = user.getLastName();
         userInfoDTO.mail = user.getMail();
         userInfoDTO.phone = user.getPhone();
+        userInfoDTO.isActivated = user.getIsActivated();
+        userInfoDTO.isDeleted = user.getIsDeleted();
 
         userInfoDTO.roles = Stream.of(user.getRoles())
                 .map(Object::toString).toArray(String[]::new);
@@ -50,6 +56,8 @@ public class UserInfoDTO {
         user.setLastName(this.lastName);
         user.setMail(this.mail);
         user.setPhone(this.phone);
+        user.setIsActivated(this.isActivated);
+        user.setIsDeleted(this.isDeleted);
 
         return user;
     }

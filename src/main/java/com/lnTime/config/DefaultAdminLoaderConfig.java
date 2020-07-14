@@ -32,6 +32,7 @@ public class DefaultAdminLoaderConfig implements ApplicationRunner {
             UserEntity admin = new UserEntity();
 
             admin.setMail(mail);
+            admin.setIsActivated(true);
             admin.setFirstName("Sevak");
             admin.setLastName("Avoyan");
             admin.setPassword(passwordEncoder.encode("11111111"));

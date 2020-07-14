@@ -13,15 +13,17 @@ public class JwtUser implements UserDetails {
     private final String mail;
     private final String password;
     private final Boolean isDeleted;
+    private final Boolean isActivated;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser(Long id, String mail, String firstName, String lastName, String password, Boolean isDeleted, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUser(Long id, String mail, String firstName, String lastName, String password, Boolean isDeleted, Boolean isActivated, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.mail = mail;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isDeleted = isDeleted;
+        this.isActivated = isActivated;
         this.authorities = authorities;
     }
 
@@ -78,6 +80,6 @@ public class JwtUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !isDeleted;
+        return !isDeleted && isActivated;
     }
 }
