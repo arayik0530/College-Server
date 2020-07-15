@@ -42,7 +42,7 @@ public class ItemController {
 
  @GetMapping("last/{categoryId}/{count}")
     public List<ItemDTO> getTopNItems(@PathVariable Long categoryId,@PathVariable Long count) {
-        return itemService.findTopNItems(categoryId, count);
+        return itemService.findTopNItems(count, categoryId);
     }
 
     @GetMapping("/images/{imageId}")
