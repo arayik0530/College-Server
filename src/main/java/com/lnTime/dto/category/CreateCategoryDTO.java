@@ -4,30 +4,26 @@ import com.lnTime.domain.CategoryEntity;
 import lombok.Data;
 
 @Data
-public class CategoryDTO {
-
-    private Long id;
+public class CreateCategoryDTO {
 
     private String title;
 
-    public static CategoryDTO mapFromEntity(CategoryEntity category) {
+    public static CreateCategoryDTO mapFromEntity(CategoryEntity category) {
 
         if (category == null) {
             return null;
         }
 
-        CategoryDTO categoryDTO = new CategoryDTO();
+        CreateCategoryDTO createCategoryDTO = new CreateCategoryDTO();
 
-        categoryDTO.title = category.getTitle();
-        categoryDTO.id = category.getId();
+        createCategoryDTO.title = category.getTitle();
 
-        return categoryDTO;
+        return createCategoryDTO;
     }
 
     public CategoryEntity toEntity(CategoryEntity category) {
 
         category.setTitle(this.title);
-        category.setId(this.id);
 
         return category;
     }

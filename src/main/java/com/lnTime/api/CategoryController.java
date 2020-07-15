@@ -1,6 +1,7 @@
 package com.lnTime.api;
 
 import com.lnTime.dto.category.CategoryDTO;
+import com.lnTime.dto.category.CreateCategoryDTO;
 import com.lnTime.dto.subCategory.SubCategoryDTO;
 import com.lnTime.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class CategoryController {
 
     @PostMapping("add")
     @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
-    void save(@RequestBody CategoryDTO categoryDTO){
-       categoryService.save(categoryDTO);
+    void save(@RequestBody CreateCategoryDTO createCategoryDTO){
+       categoryService.save(createCategoryDTO);
     }
 
     @PutMapping("{id}/update")

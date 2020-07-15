@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,22 +27,19 @@ public class ItemEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String path;
-
     @Column(nullable = false, length = 3000)
     private String description;
 
     @Column
     private String text;
 
-    @JoinColumn(name = "sub_category_id", nullable = false)
+    @JoinColumn(name = "sub_category_id")
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private SubCategoryEntity subCategory;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ImageEntity> images;
+    private List<ImageEntity> images = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -70,7 +68,7 @@ public class ItemEntity {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", category=" + subCategory +
+                ", sub-category=" + subCategory +
                 '}';
     }
 }

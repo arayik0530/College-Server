@@ -1,5 +1,6 @@
 package com.lnTime.dto.subCategory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lnTime.domain.CategoryEntity;
 import com.lnTime.domain.SubCategoryEntity;
 import com.lnTime.repository.CategoryRepository;
@@ -12,8 +13,6 @@ import java.util.Optional;
 @Data
 public class SubCategoryDTO {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     private Long categoryId;
 
@@ -38,14 +37,8 @@ public class SubCategoryDTO {
 
     public SubCategoryEntity toEntity(SubCategoryEntity subCategory) {
 
-        subCategory.setId(this.id);
-        Optional<CategoryEntity> byId = categoryRepository.findById(this.categoryId);
-        if(byId.isPresent())
-            subCategory.setCategory(byId.get());
-        else
-            throw new CategoryNotFoundException(this.categoryId);
         subCategory.setTitle(this.title);
-
+        subCategory.setId(this.id);
         return subCategory;
     }
 }

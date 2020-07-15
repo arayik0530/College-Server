@@ -1,6 +1,7 @@
 package com.lnTime.service;
 
 import com.lnTime.dto.category.CategoryDTO;
+import com.lnTime.dto.category.CreateCategoryDTO;
 import com.lnTime.dto.subCategory.SubCategoryDTO;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CategoryService {
 
     void remove(Long id);
 
-    void save(CategoryDTO categoryDTO);
+    void save(CreateCategoryDTO createCategoryDTO);
 
     void update(CategoryDTO categoryDTO, Long id);
 

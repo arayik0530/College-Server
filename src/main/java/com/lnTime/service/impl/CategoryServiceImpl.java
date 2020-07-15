@@ -2,6 +2,7 @@ package com.lnTime.service.impl;
 
 import com.lnTime.domain.CategoryEntity;
 import com.lnTime.dto.category.CategoryDTO;
+import com.lnTime.dto.category.CreateCategoryDTO;
 import com.lnTime.dto.subCategory.SubCategoryDTO;
 import com.lnTime.repository.CategoryRepository;
 import com.lnTime.repository.SubCategoryRepository;
@@ -47,9 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void save(CategoryDTO categoryDTO) {
+    public void save(CreateCategoryDTO createCategoryDTO) {
         CategoryEntity categoryEntity = new CategoryEntity();
-        categoryRepository.save(categoryDTO.toEntity(categoryEntity));
+        categoryRepository.save(createCategoryDTO.toEntity(categoryEntity));
     }
 
     @Override

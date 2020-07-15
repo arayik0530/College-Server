@@ -1,6 +1,7 @@
 package com.lnTime.api;
 
 import com.lnTime.dto.item.ItemDTO;
+import com.lnTime.dto.subCategory.CreateSubCategoryDTO;
 import com.lnTime.dto.subCategory.SubCategoryDTO;
 import com.lnTime.service.SubCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class SubCategoryController {
 
     @PostMapping("add")
     @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
-    void save(@RequestBody SubCategoryDTO subCategoryDTO){
-        subCategoryService.save(subCategoryDTO);
+    void save(@RequestBody CreateSubCategoryDTO createSubCategoryDTO){
+        subCategoryService.save(createSubCategoryDTO);
     }
 
     @PutMapping("{id}/update")
@@ -44,8 +45,8 @@ public class SubCategoryController {
         return subCategoryService.getAll();
     }
 
-    @GetMapping("{categoryId}/show/items")
-    List<ItemDTO> getItems(@PathVariable Long categoryId){
-        return subCategoryService.getItems(categoryId);
+    @GetMapping("{subCategoryId}/show/items")
+    List<ItemDTO> getItems(@PathVariable Long subCategoryId){
+        return subCategoryService.getItems(subCategoryId);
     }
 }

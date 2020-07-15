@@ -2,6 +2,7 @@ package com.lnTime.service;
 
 import com.lnTime.domain.ImageEntity;
 import com.lnTime.domain.ItemEntity;
+import com.lnTime.dto.item.CreateItemDTO;
 import com.lnTime.dto.item.ItemDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface ItemService {
 
     void remove(Long id);
 
-    void save(ItemDTO item);
+    void save(CreateItemDTO createItemDTO);
 
     void update(ItemDTO item, Long id);
 

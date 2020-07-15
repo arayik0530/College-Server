@@ -22,7 +22,7 @@ public class SubCategoryEntity {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ItemEntity> items = new ArrayList<>();
 
     @JoinColumn(name = "category_id", nullable = false)

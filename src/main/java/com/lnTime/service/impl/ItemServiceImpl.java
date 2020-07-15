@@ -2,11 +2,15 @@ package com.lnTime.service.impl;
 
 import com.lnTime.domain.ImageEntity;
 import com.lnTime.domain.ItemEntity;
+import com.lnTime.domain.SubCategoryEntity;
+import com.lnTime.dto.item.CreateItemDTO;
 import com.lnTime.dto.item.ItemDTO;
 import com.lnTime.repository.ItemRepository;
+import com.lnTime.repository.SubCategoryRepository;
 import com.lnTime.service.ImageService;
 import com.lnTime.service.ItemService;
 import com.lnTime.service.util.exception.ItemNotFoundException;
+import com.lnTime.service.util.exception.SubCategoryNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
     @Autowired
     private ImageService imageService;
@@ -63,10 +70,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void save(ItemDTO item) {
+    public void save(CreateItemDTO createItemDTO) {
         ItemEntity itemEntity = new ItemEntity();
-        itemRepository.save(item.toEntity(itemEntity));
-    }
+        Optional<SubCategoryEntity> byId = subCategoryRepository.findById(createItemDTO.getSubCategoryId());
+        if(byId.isPresent())
+            itemEntity.setSubCategory(byId.get());
+        else
+            throw new SubCategoryNotFoundException(createItemDTO.getSubCategoryId());
+        itemRepository.save(createItemDTO.toEntity(itemEntity));
+     }
 
     @Override
     @Transactional
@@ -85,7 +97,6 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void saveImage(MultipartFile image, Long itemId) {
         try {
-
             imageService.save(image.getBytes(), itemId);
 
         } catch (IOException ex) {
