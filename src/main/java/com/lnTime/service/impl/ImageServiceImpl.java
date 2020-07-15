@@ -59,4 +59,15 @@ public class ImageServiceImpl implements ImageService {
            throw new ImageNotFoundException(imageId);
        }
     }
+
+    @Override
+    public byte[] getImageBytesById(Long imageId) {
+        Optional<ImageEntity> byId = imageRepository.findById(imageId);
+        if(byId.isPresent()){
+            return byId.get().getPicture();
+        }
+        else {
+            throw new ImageNotFoundException(imageId);
+        }
+    }
 }

@@ -8,5 +8,7 @@ public interface ImageService {
 
     void save(byte[] imagesBytes, Long itemId);
 
+    byte[] getImageBytesById(Long imageId);
+
     ImageEntity findById(Long imageId);
 }

@@ -121,10 +121,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ImageEntity> getAlImages(Long itemId) {
+    public List<Long> getAlImagesIds(Long itemId) {
         Optional<ItemEntity> byId = itemRepository.findById(itemId);
         if (byId.isPresent()) {
-            return byId.get().getImages();
+            return byId
+                    .get()
+                    .getImages()
+                    .stream()
+                    .map(i -> i.getId())
+                    .collect(Collectors.toList());
         } else {
             throw new ItemNotFoundException(itemId);
         }

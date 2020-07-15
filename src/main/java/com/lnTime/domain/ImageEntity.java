@@ -22,5 +22,4 @@ public class ImageEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private byte[] picture;
-
 }

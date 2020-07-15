@@ -5,6 +5,7 @@ import com.lnTime.domain.ItemEntity;
 import com.lnTime.dto.item.CreateItemDTO;
 import com.lnTime.dto.item.ItemDTO;
 import com.lnTime.repository.ImageRepository;
+import com.lnTime.service.ImageService;
 import com.lnTime.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
     @Autowired
-    private ImageRepository imageRepository;
+    private ImageService imageService;
 
     @DeleteMapping("delete/{id}")
     @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
@@ -34,17 +35,18 @@ public class ItemController {
         itemService.remove(id);
     }
 
-    @GetMapping("{id}/all-images")
-    public List<ImageEntity> getAllImages(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        return itemService.getAlImages(id);
+    @GetMapping("{itemId}/all-images")
+    public List<Long> getAllImages(@PathVariable Long itemId) {
+        return itemService.getAlImagesIds(itemId);
     }
 
-    @GetMapping("{id}/images/{imageId}")
-    public @ResponseBody ResponseEntity<byte[]> getImageWithMediaType(@PathVariable("id") Long id,
-                                                                      @PathVariable("imageId") Long imageId,
-                                                                      HttpServletResponse response) throws IOException {
-    final byte[] picture = imageRepository.findById(imageId).get().getPicture();
-    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(picture);
+    @GetMapping("/images/{imageId}")
+    public @ResponseBody
+    ResponseEntity<byte[]> getImageWithMediaType(
+            @PathVariable Long imageId, HttpServletResponse response
+    ) throws IOException {
+        final byte[] picture = imageService.getImageBytesById(imageId);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(picture);
     }
 
     @GetMapping("{id}/show")
@@ -59,25 +61,25 @@ public class ItemController {
 
     @PostMapping("add")
     @PreAuthorize(value = "isAuthenticated()")
-    public void save(@RequestBody CreateItemDTO item){
+    public void save(@RequestBody CreateItemDTO item) {
         itemService.save(item);
     }
 
     @PutMapping("update/{id}")
     @PreAuthorize(value = "hasAuthority('ROLE_RECTOR')")
-    public void update(@RequestBody ItemDTO item, @PathVariable Long id){
-       itemService.update(item, id);
+    public void update(@RequestBody ItemDTO item, @PathVariable Long id) {
+        itemService.update(item, id);
     }
 
-    @PutMapping(value = "{id}/add-image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "{id}/add-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize(value = "isAuthenticated()")
-    public void saveImage(@PathVariable Long id, MultipartFile image){
+    public void saveImage(@PathVariable Long id, MultipartFile image) {
         itemService.saveImage(image, id);
     }
 
     @DeleteMapping("{id}/image-{image_id}/delete")
     @PreAuthorize(value = "isAuthenticated()")
-    public void deleteImage(@PathVariable Long id, @PathVariable Long image_id){
-       itemService.deleteImage(image_id, id);
+    public void deleteImage(@PathVariable Long id, @PathVariable Long image_id) {
+        itemService.deleteImage(image_id, id);
     }
 }

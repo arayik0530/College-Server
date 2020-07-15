@@ -27,5 +27,5 @@ public interface ItemService {
 
     void deleteImage(Long imageId, Long itemId);
 
-    List<ImageEntity> getAlImages(Long itemId);
+    List<Long> getAlImagesIds(Long itemId);
 }
