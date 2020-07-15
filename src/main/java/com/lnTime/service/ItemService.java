@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface ItemService {
 
-    //TODO or Page<ItemDTO> ?
     Page<ItemDTO> findByTitleOrDescription(String param, Pageable pageable);
+
+    List<ItemDTO> findToptNItems(Long n);
 
     ItemEntity findById(Long id);
 

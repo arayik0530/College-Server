@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,15 @@ public class ItemServiceImpl implements ItemService {
                 .map(i -> ItemDTO.mapFromEntity(i))
                 .collect(Collectors.toList());
         return new PageImpl<>(itemDTOS);
+    }
+
+    @Override
+    public List<ItemDTO> findToptNItems(Long n) {
+        return itemRepository.findAllByOrderByCreatedDesc(PageRequest.of(0, n.intValue()))
+                .stream()
+                .map(ItemDTO::mapFromEntity)
+                .collect(Collectors.toList());
+
     }
 
     @Override

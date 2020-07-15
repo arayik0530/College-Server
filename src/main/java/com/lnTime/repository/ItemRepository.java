@@ -1,6 +1,5 @@
 package com.lnTime.repository;
 
-import com.lnTime.domain.CategoryEntity;
 import com.lnTime.domain.ItemEntity;
 import com.lnTime.domain.SubCategoryEntity;
 import org.springframework.data.domain.Page;
@@ -19,4 +18,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     Page<ItemEntity> searchByParam(String param, Pageable pageable);
 
     List<ItemEntity> findAllBySubCategory(SubCategoryEntity subCategoryEntity);
+
+    Page<ItemEntity> findAllByOrderByCreatedDesc(Pageable pageable);
+
 }

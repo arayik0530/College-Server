@@ -40,6 +40,11 @@ public class ItemController {
         return itemService.getAlImagesIds(itemId);
     }
 
+ @GetMapping("last/{count}")
+    public List<ItemDTO> getTopNItems(@PathVariable Long count) {
+        return itemService.findToptNItems(count);
+    }
+
     @GetMapping("/images/{imageId}")
     public @ResponseBody
     ResponseEntity<byte[]> getImageWithMediaType(
