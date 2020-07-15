@@ -19,4 +19,7 @@ public interface SubCategoryService {
     List<SubCategoryDTO> getAll();
 
     List<ItemDTO> getItems(Long subCategoryId);
+
+    String getPath(Long subCategoryId);
+
 }

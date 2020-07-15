@@ -9,6 +9,7 @@ import com.lnTime.repository.ItemRepository;
 import com.lnTime.repository.SubCategoryRepository;
 import com.lnTime.service.ImageService;
 import com.lnTime.service.ItemService;
+import com.lnTime.service.util.exception.CategoryNotFoundException;
 import com.lnTime.service.util.exception.ItemNotFoundException;
 import com.lnTime.service.util.exception.SubCategoryNotFoundException;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Page<ItemDTO> findByTitleOrDescription(String param, Pageable pageable) {
-        List<ItemDTO> itemDTOS =  itemRepository
+        List<ItemDTO> itemDTOS = itemRepository
                 .searchByParam(param, pageable)
                 .stream()
                 .map(i -> ItemDTO.mapFromEntity(i))
@@ -51,8 +52,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> findToptNItems(Long n) {
-        return itemRepository.findAllByOrderByCreatedDesc(PageRequest.of(0, n.intValue()))
+    public List<ItemDTO> findTopNItems(Long n, Long categoryId) {
+
+        return itemRepository.
+                findAllBySubCategory_Category_IdOrderByCreatedDesc
+                        (categoryId, PageRequest.of(0, n.intValue()))
                 .stream()
                 .map(ItemDTO::mapFromEntity)
                 .collect(Collectors.toList());
@@ -83,12 +87,12 @@ public class ItemServiceImpl implements ItemService {
     public void save(CreateItemDTO createItemDTO) {
         ItemEntity itemEntity = new ItemEntity();
         Optional<SubCategoryEntity> byId = subCategoryRepository.findById(createItemDTO.getSubCategoryId());
-        if(byId.isPresent())
+        if (byId.isPresent())
             itemEntity.setSubCategory(byId.get());
         else
             throw new SubCategoryNotFoundException(createItemDTO.getSubCategoryId());
         itemRepository.save(createItemDTO.toEntity(itemEntity));
-     }
+    }
 
     @Override
     @Transactional
@@ -142,6 +146,17 @@ public class ItemServiceImpl implements ItemService {
                     .collect(Collectors.toList());
         } else {
             throw new ItemNotFoundException(itemId);
+        }
+    }
+
+    @Override
+    public String getPath(final Long itemId) {
+        Optional<ItemEntity> byId = itemRepository.findById(itemId);
+        if (byId.isPresent()) {
+            return byId.get().getSubCategory().getCategory().getTitle() + "/" +
+                     byId.get().getSubCategory().getTitle() + "/" + byId.get().getTitle();
+        } else {
+            throw new CategoryNotFoundException(itemId);
         }
     }
 }

@@ -49,4 +49,9 @@ public class CategoryController {
     List<SubCategoryDTO> getSubCategories(@PathVariable Long categoryId){
         return categoryService.getSubCategories(categoryId);
     }
+
+    @GetMapping("{id}/path")
+    String getPath(@PathVariable Long id){
+        return categoryService.getPath(id);
+    }
 }

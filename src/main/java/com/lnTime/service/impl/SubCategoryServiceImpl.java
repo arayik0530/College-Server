@@ -96,4 +96,14 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                 .map(ItemDTO::mapFromEntity)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String getPath(final Long subCategoryId) {
+        Optional<SubCategoryEntity> byId = subCategoryRepository.findById(subCategoryId);
+        if (byId.isPresent()) {
+            return byId.get().getCategory().getTitle() + "/" + byId.get().getTitle();
+        } else {
+            throw new CategoryNotFoundException(subCategoryId);
+        }
+    }
 }

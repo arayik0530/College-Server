@@ -85,4 +85,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(s -> SubCategoryDTO.mapFromEntity(s))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String getPath(final Long categoryId) {
+        Optional<CategoryEntity> byId = categoryRepository.findById(categoryId);
+        if (byId.isPresent()) {
+           return byId.get().getTitle();
+        } else {
+            throw new CategoryNotFoundException(categoryId);
+        }
+    }
 }

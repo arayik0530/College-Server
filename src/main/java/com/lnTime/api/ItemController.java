@@ -40,9 +40,9 @@ public class ItemController {
         return itemService.getAlImagesIds(itemId);
     }
 
- @GetMapping("last/{count}")
-    public List<ItemDTO> getTopNItems(@PathVariable Long count) {
-        return itemService.findToptNItems(count);
+ @GetMapping("last/{categoryId}/{count}")
+    public List<ItemDTO> getTopNItems(@PathVariable Long categoryId,@PathVariable Long count) {
+        return itemService.findTopNItems(categoryId, count);
     }
 
     @GetMapping("/images/{imageId}")
@@ -86,5 +86,10 @@ public class ItemController {
     @PreAuthorize(value = "isAuthenticated()")
     public void deleteImage(@PathVariable Long id, @PathVariable Long image_id) {
         itemService.deleteImage(image_id, id);
+    }
+
+    @GetMapping("{id}/path")
+    String getPath(@PathVariable Long id){
+        return itemService.getPath(id);
     }
 }

@@ -14,7 +14,9 @@ public interface ItemService {
 
     Page<ItemDTO> findByTitleOrDescription(String param, Pageable pageable);
 
-    List<ItemDTO> findToptNItems(Long n);
+
+
+    List<ItemDTO> findTopNItems(Long n, Long categoryId);
 
     ItemEntity findById(Long id);
 
@@ -29,4 +31,6 @@ public interface ItemService {
     void deleteImage(Long imageId, Long itemId);
 
     List<Long> getAlImagesIds(Long itemId);
+
+    String getPath(Long ItemId);
 }
