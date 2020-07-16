@@ -101,7 +101,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     public String getPath(final Long subCategoryId) {
         Optional<SubCategoryEntity> byId = subCategoryRepository.findById(subCategoryId);
         if (byId.isPresent()) {
-            return byId.get().getCategory().getTitle() + "/" + byId.get().getTitle();
+            return (byId.get().getCategory().getTitle() + "/" + byId.get().getTitle())
+            .replace(" ", "-");
         } else {
             throw new CategoryNotFoundException(subCategoryId);
         }

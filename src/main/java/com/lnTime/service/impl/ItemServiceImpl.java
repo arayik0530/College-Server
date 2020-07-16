@@ -153,8 +153,9 @@ public class ItemServiceImpl implements ItemService {
     public String getPath(final Long itemId) {
         Optional<ItemEntity> byId = itemRepository.findById(itemId);
         if (byId.isPresent()) {
-            return byId.get().getSubCategory().getCategory().getTitle() + "/" +
-                     byId.get().getSubCategory().getTitle() + "/" + byId.get().getTitle();
+            return (byId.get().getSubCategory().getCategory().getTitle() + "/" +
+                     byId.get().getSubCategory().getTitle() + "/" + byId.get().getTitle())
+                    .replace(" ", "-");
         } else {
             throw new CategoryNotFoundException(itemId);
         }

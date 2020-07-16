@@ -90,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String getPath(final Long categoryId) {
         Optional<CategoryEntity> byId = categoryRepository.findById(categoryId);
         if (byId.isPresent()) {
-           return byId.get().getTitle();
+           return byId.get().getTitle().replace(" ", "-");
         } else {
             throw new CategoryNotFoundException(categoryId);
         }
