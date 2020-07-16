@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/subCategories/")
+@CrossOrigin("*")
 public class SubCategoryController {
 
     @Autowired

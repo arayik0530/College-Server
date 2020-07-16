@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 @ControllerAdvice
 @Component
+@CrossOrigin("*")
 public class ExceptionHandlerController {
 
     public void handleFilterExceptions(Throwable throwable, HttpServletResponse response) throws IOException {
