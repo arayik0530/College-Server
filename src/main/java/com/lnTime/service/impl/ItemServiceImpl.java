@@ -60,11 +60,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> findTopNItems(Long n, Long categoryId) {
+    public List<ItemDTO> findTopNItems(Long n, Long categoryId, Integer pageNumber) {
 
         List<ItemDTO> itemDTOS = itemRepository.
                 findAllBySubCategory_Category_IdOrderByCreatedDesc
-                        (categoryId, PageRequest.of(0, n.intValue()))
+                        (categoryId, PageRequest.of(pageNumber, 3))
                 .stream()
                 .map(ItemDTO::mapFromEntity)
                 .collect(Collectors.toList());

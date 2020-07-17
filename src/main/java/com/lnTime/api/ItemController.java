@@ -41,9 +41,9 @@ public class ItemController {
         return itemService.getAlImagesIds(itemId);
     }
 
- @GetMapping("last/{categoryId}/{count}")
-    public List<ItemDTO> getTopNItems(@PathVariable Long categoryId,@PathVariable Long count) {
-        return itemService.findTopNItems(count, categoryId);
+ @GetMapping("last/{categoryId}/{count}/{pageNumber}")
+    public List<ItemDTO> getTopNItems(@PathVariable Long categoryId,@PathVariable Long count, @PathVariable Integer pageNumber) {
+        return itemService.findTopNItems(count, categoryId, pageNumber);
     }
 
     @GetMapping("images/{imageId}")

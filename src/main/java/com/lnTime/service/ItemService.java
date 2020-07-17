@@ -16,7 +16,7 @@ public interface ItemService {
 
 
 
-    List<ItemDTO> findTopNItems(Long n, Long categoryId);
+    List<ItemDTO> findTopNItems(Long n, Long categoryId, Integer pageNumber);
 
     ItemDTO findById(Long id);
 

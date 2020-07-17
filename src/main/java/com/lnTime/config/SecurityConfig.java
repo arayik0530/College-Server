@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable()
                 .csrf().disable()
-//                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling().and()
@@ -41,21 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/error").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/items/**/all-images").permitAll()//TODO test from front
-                .antMatchers("/api/items/**/show").permitAll()//TODO test from front
-                .antMatchers("/api/items/**/path").permitAll()//TODO test from front
-                .antMatchers("/api/items/images/**").permitAll()//TODO test from front
-                .antMatchers("/api/items/last/**/**").permitAll()//TODO test from front
-                .antMatchers("/api/categories/**/show").permitAll()//TODO test from front
-                .antMatchers("/api/subCategories/**/show").permitAll()//TODO test from front
-                .antMatchers("/api/categories/**/show/subCategories").permitAll()//TODO test from front
-                .antMatchers("/api/categories/**/path").permitAll()//TODO test from front
-                .antMatchers("/api/subCategories/**/path").permitAll()//TODO test from front
-                .antMatchers("/api/subCategories/**/show/items").permitAll()//TODO test from front
-                .antMatchers("/api/slider-images/delete/**").authenticated()//TODO test from front
-                .antMatchers("/api/slider-images/add").authenticated()//TODO test from front
-                .antMatchers("/api/slider-images/**").permitAll()//TODO test from front
-                .antMatchers("/api/slider-images/allIds").permitAll()//TODO test from front
+                .antMatchers("/api/items/**/all-images").permitAll()
+                .antMatchers("/api/items/**/show").permitAll()
+                .antMatchers("/api/items/**/path").permitAll()
+                .antMatchers("/api/items/images/**").permitAll()
+                .antMatchers("/api/items/last/**/**").permitAll()
+                .antMatchers("/api/categories/**/show").permitAll()
+                .antMatchers("/api/subCategories/**/show").permitAll()
+                .antMatchers("/api/categories/**/show/subCategories").permitAll()
+                .antMatchers("/api/categories/**/path").permitAll()
+                .antMatchers("/api/subCategories/**/path").permitAll()
+                .antMatchers("/api/subCategories/**/show/items").permitAll()
+                .antMatchers("/api/slider-images/delete/**").authenticated()
+                .antMatchers("/api/slider-images/add").authenticated()
+                .antMatchers("/api/slider-images/**").permitAll()
+                .antMatchers("/api/slider-images/allIds").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
