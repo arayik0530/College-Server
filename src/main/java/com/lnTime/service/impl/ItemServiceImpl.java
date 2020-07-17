@@ -13,7 +13,9 @@ import com.lnTime.service.util.exception.CategoryNotFoundException;
 import com.lnTime.service.util.exception.ItemNotFoundException;
 import com.lnTime.service.util.exception.SubCategoryNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-@AllArgsConstructor
+@Data
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
@@ -41,6 +43,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ImageService imageService;
 
+    @Value("${baseURL}")
+    private String baseURL;
+
     @Override
     public Page<ItemDTO> findByTitleOrDescription(String param, Pageable pageable) {
         List<ItemDTO> itemDTOS = itemRepository
@@ -48,26 +53,38 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .map(i -> ItemDTO.mapFromEntity(i))
                 .collect(Collectors.toList());
+        for(ItemDTO itd: itemDTOS){
+            itd.setImageURLs(this.getAlImagesURLs(itd.getId()));
+        }
         return new PageImpl<>(itemDTOS);
     }
 
     @Override
     public List<ItemDTO> findTopNItems(Long n, Long categoryId) {
 
-        return itemRepository.
+        List<ItemDTO> itemDTOS = itemRepository.
                 findAllBySubCategory_Category_IdOrderByCreatedDesc
                         (categoryId, PageRequest.of(0, n.intValue()))
                 .stream()
                 .map(ItemDTO::mapFromEntity)
                 .collect(Collectors.toList());
 
+        for(ItemDTO itd: itemDTOS){
+            itd.setImageURLs(this.getAlImagesURLs(itd.getId()));
+        }
+        return itemDTOS;
+
     }
 
     @Override
-    public ItemEntity findById(Long id) {
+    public ItemDTO findById(Long id) {
         Optional<ItemEntity> byId = itemRepository.findById(id);
         if (byId.isPresent()) {
-            return byId.get();
+            ItemDTO itemDTO = ItemDTO.mapFromEntity(byId.get());
+            itemDTO.setImageURLs(this.getAlImagesURLs(itemDTO.getId()));
+
+            return itemDTO;
+
         } else {
             throw new ItemNotFoundException(id);
         }
@@ -147,6 +164,15 @@ public class ItemServiceImpl implements ItemService {
         } else {
             throw new ItemNotFoundException(itemId);
         }
+    }
+
+    @Override
+    public List<String> getAlImagesURLs(final Long itemId) {
+
+        return this.getAlImagesIds(itemId)
+                .stream()
+                .map(id -> baseURL+ "/api/items/images/" + id)
+                .collect(Collectors.toList());
     }
 
     @Override

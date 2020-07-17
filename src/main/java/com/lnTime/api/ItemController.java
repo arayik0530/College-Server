@@ -46,7 +46,7 @@ public class ItemController {
         return itemService.findTopNItems(count, categoryId);
     }
 
-    @GetMapping("/images/{imageId}")
+    @GetMapping("images/{imageId}")
     public @ResponseBody
     ResponseEntity<byte[]> getImageWithMediaType(
             @PathVariable Long imageId, HttpServletResponse response
@@ -56,7 +56,7 @@ public class ItemController {
     }
 
     @GetMapping("{id}/show")
-    public ItemEntity getById(@PathVariable Long id) {
+    public ItemDTO getById(@PathVariable Long id) {
         return itemService.findById(id);
     }
 

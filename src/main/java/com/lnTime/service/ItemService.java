@@ -18,7 +18,7 @@ public interface ItemService {
 
     List<ItemDTO> findTopNItems(Long n, Long categoryId);
 
-    ItemEntity findById(Long id);
+    ItemDTO findById(Long id);
 
     void remove(Long id);
 
@@ -31,6 +31,8 @@ public interface ItemService {
     void deleteImage(Long imageId, Long itemId);
 
     List<Long> getAlImagesIds(Long itemId);
+
+    List<String> getAlImagesURLs(Long itemId);
 
     String getPath(Long ItemId);
 }

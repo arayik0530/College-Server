@@ -4,6 +4,8 @@ import com.lnTime.domain.ItemEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class ItemDTO {
@@ -21,6 +23,8 @@ public class ItemDTO {
     private LocalDateTime lastUpdated;
 
     private Long subCategoryId;
+
+    private List<String> imageURLs = new ArrayList<>();
 
     public static ItemDTO mapFromEntity(ItemEntity item) {
 
