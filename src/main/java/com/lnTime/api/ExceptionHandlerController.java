@@ -52,7 +52,7 @@ public class ExceptionHandlerController {
             ImageNotFoundException.class,
             SubCategoryNotFoundException.class,
             CategoryNotFoundException.class,
-           // InvalidTokenException.class,
+            SliderImageNotFoundException.class,
             })
 
     public ResponseEntity<String> handleAllNotFoundExceptions(RuntimeException exception) {
